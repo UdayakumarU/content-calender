@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ContentCollectionRespository {
+public class ContentCollectionRepository {
      private final List<Content> contentList = new ArrayList<>();
-     public ContentCollectionRespository(){}
+     public ContentCollectionRepository(){}
 
      public List<Content> findAll(){
           return contentList;
@@ -25,7 +25,16 @@ public class ContentCollectionRespository {
      }
 
      public void save(Content content){
+          contentList.removeIf(c->c.id().equals(content.id()));
           contentList.add(content);
+     }
+
+     public boolean existedById(Integer id){
+          return contentList.stream().filter(c -> c.id().equals(id)).count() == 1;
+     }
+
+     public void deleteById( Integer id ){
+          contentList.removeIf(c ->c.id().equals(id));
      }
 
      @PostConstruct
